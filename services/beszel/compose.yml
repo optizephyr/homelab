@@ -1,0 +1,31 @@
+# Hub and agent are separate profiles so they can run on different hosts.
+services:
+  beszel:
+    profiles: ["beszel"]
+    image: henrygd/beszel:latest
+    container_name: beszel
+    restart: unless-stopped
+    volumes:
+      - beszel-data:/beszel_data
+    networks:
+      - edge
+
+  beszel-agent:
+    profiles: ["beszel-agent"]
+    image: henrygd/beszel-agent:latest
+    container_name: beszel-agent
+    restart: unless-stopped
+    network_mode: host
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    environment:
+      # Set in .env when enabling this profile
+      HUB_URL: ${BESZEL_HUB_URL:-}
+      TOKEN: ${BESZEL_TOKEN:-}
+
+volumes:
+  beszel-data:
+
+networks:
+  edge:
+    name: homelab_edge

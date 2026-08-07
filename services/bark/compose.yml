@@ -1,0 +1,17 @@
+services:
+  bark-server:
+    profiles: ["bark"]
+    image: finab/bark-server:latest
+    container_name: bark-server
+    restart: unless-stopped
+    volumes:
+      - bark-data:/data
+    networks:
+      - edge
+
+volumes:
+  bark-data:
+
+networks:
+  edge:
+    name: homelab_edge

@@ -1,0 +1,18 @@
+# Top-level compose: shared network + optional service includes.
+# Enable modules via: docker compose --profile <name> up -d
+# Or set PROFILES in .env and use ./scripts/up.sh
+
+name: homelab
+
+include:
+  - path: nginx/compose.yml
+  - path: services/uptime-kuma/compose.yml
+  - path: services/bark/compose.yml
+  - path: services/beszel/compose.yml
+  - path: services/termix/compose.yml
+  - path: services/tailscale-derp/compose.yml
+  - path: services/easytier-relay/compose.yml
+
+networks:
+  edge:
+    name: homelab_edge

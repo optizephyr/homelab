@@ -1,0 +1,20 @@
+services:
+  uptime-kuma:
+    profiles: ["uptime-kuma"]
+    image: louislam/uptime-kuma:1
+    container_name: uptime-kuma
+    restart: unless-stopped
+    volumes:
+      - uptime-kuma-data:/app/data
+    networks:
+      - edge
+    # Expose only via Nginx on the edge network.
+    # ports:
+    #   - "3001:3001"
+
+volumes:
+  uptime-kuma-data:
+
+networks:
+  edge:
+    name: homelab_edge

@@ -1,0 +1,14 @@
+# Optional — not required if SSH is enough.
+# Set TERMIX_IMAGE in .env after confirming the upstream image.
+services:
+  termix:
+    profiles: ["termix"]
+    image: ${TERMIX_IMAGE:-public.ecr.aws/termix/termix:placeholder}
+    container_name: termix
+    restart: unless-stopped
+    networks:
+      - edge
+
+networks:
+  edge:
+    name: homelab_edge

@@ -1,0 +1,20 @@
+# Custom Tailscale DERP — VPS only (not runnable on Workers / edge functions).
+# Prefer host networking; follow upstream derper docs for certs and STUN.
+# https://tailscale.com/docs/reference/derp-servers/custom-derp-servers
+services:
+  tailscale-derp:
+    profiles: ["tailscale-derp"]
+    image: ${DERPER_IMAGE:-ghcr.io/fredliang44/derper:latest}
+    container_name: tailscale-derp
+    restart: unless-stopped
+    network_mode: host
+    environment:
+      DERP_DOMAIN: ${DERP_DOMAIN:-}
+      DERP_VERIFY_CLIENTS: ${DERP_VERIFY_CLIENTS:-false}
+    volumes:
+      - derper-certs:/app/certs
+      - derper-data:/var/lib/derper
+
+volumes:
+  derper-certs:
+  derper-data:

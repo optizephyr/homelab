@@ -1,0 +1,19 @@
+# EasyTier relay / public node on VPS.
+# Confirm flags against current EasyTier docs before production use.
+services:
+  easytier-relay:
+    profiles: ["easytier-relay"]
+    image: easytier/easytier:latest
+    container_name: easytier-relay
+    restart: unless-stopped
+    network_mode: host
+    volumes:
+      - easytier-data:/var/lib/easytier
+    # Example override — adjust in .env / command as needed:
+    # command: ["-d", "--network-name", "${EASYTIER_NETWORK_NAME}", "--network-secret", "${EASYTIER_NETWORK_SECRET}"]
+    environment:
+      EASYTIER_NETWORK_NAME: ${EASYTIER_NETWORK_NAME:-}
+      EASYTIER_NETWORK_SECRET: ${EASYTIER_NETWORK_SECRET:-}
+
+volumes:
+  easytier-data:

@@ -1,0 +1,20 @@
+services:
+  nginx:
+    profiles: ["nginx"]
+    image: nginx:1.27-alpine
+    container_name: homelab-nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./conf.d:/etc/nginx/conf.d:ro
+      # Mount host certs when using Certbot on the host, e.g.:
+      # - /etc/letsencrypt:/etc/letsencrypt:ro
+    networks:
+      - edge
+
+networks:
+  edge:
+    name: homelab_edge
