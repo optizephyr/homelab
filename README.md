@@ -1,7 +1,9 @@
-# homelab-stack
+# homelab
 
 轻量自托管栈：Ubuntu + Docker Compose + Nginx。  
 **仓库是可插拔服务目录；某次部署启用哪些业务，由该机 `.env` 里的 `PROFILES` 决定。**
+
+仓库：https://github.com/optizephyr/homelab.git
 
 ## 原则
 
@@ -35,8 +37,8 @@
 
 ```bash
 # 私有库需 Deploy Key 或 PAT
-git clone <this-repo> /opt/homelab-stack
-cd /opt/homelab-stack
+git clone https://github.com/optizephyr/homelab.git /opt/homelab
+cd /opt/homelab
 cp .env.example .env   # 填 PROFILES、DOMAIN 等
 chmod 600 .env
 ./bootstrap.sh
