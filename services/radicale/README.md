@@ -12,7 +12,7 @@ CalDAV（日历 / 待办）与 CardDAV（通讯录）服务端。仅经 Caddy �
 ```bash
 # .env
 PROFILES=caddy,radicale,...
-DOMAIN=example.com
+CADDY_DOMAIN=example.com
 ```
 
 首次启动前在本机生成 `services/radicale/config/users`（`bootstrap.sh` 在缺文件时会 `touch`，但仍需写入哈希）：
@@ -56,16 +56,16 @@ docker run --rm httpd:2-alpine htpasswd -Bbn USER2 PASS2 \
 
 ## Caddy
 
-`caldav.${DOMAIN}` → `radicale:5232`。挂在子域名根路径，**不要**设 `X-Script-Name`。
+`caldav.${CADDY_DOMAIN}` → `radicale:5232`。挂在子域名根路径，**不要**设 `X-Script-Name`。
 
 Radicale 自身的 `max_content_length` 为 100MB；Caddy 不额外降低请求体上限。`/.well-known/caldav` 与 `carddav` 重定向到 `/`，方便 Apple 客户端发现。
 
 客户端（DAVx⁵、Thunderbird、Apple 日历等）填写：
 
-- 服务器：`https://caldav.${DOMAIN}`
+- 服务器：`https://caldav.${CADDY_DOMAIN}`
 - 用户名 / 密码：`users` 里的条目
 
-部分客户端要填集合 URL：`https://caldav.${DOMAIN}/USERNAME/`。可先用 Web UI 建日历 / 通讯录。
+部分客户端要填集合 URL：`https://caldav.${CADDY_DOMAIN}/USERNAME/`。可先用 Web UI 建日历 / 通讯录。
 
 macOS 日历在明文 HTTP 上可能不带账号；对外应走 HTTPS。
 
@@ -73,6 +73,6 @@ macOS 日历在明文 HTTP 上可能不带账号；对外应走 HTTPS。
 
 1. `PROFILES` 含 `radicale`  
 2. `services/radicale/config/users` 已有 bcrypt/htpasswd 行，权限不要对其他人可读  
-3. DNS / Caddy：`caldav.${DOMAIN}` → `radicale:5232`
+3. DNS / Caddy：`caldav.${CADDY_DOMAIN}` → `radicale:5232`
 4. 卷 `radicale-data` 是否在本机（换机需迁卷）  
 5. 客户端用 HTTPS 与正确用户名（路径 `/USERNAME/`）  

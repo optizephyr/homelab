@@ -29,7 +29,7 @@
 | Profile | 规则 |
 |---------|------|
 | `caddy` | **每台必须**（`PROFILES` 必须包含） |
-| `beszel-agent` | **仅当启用 Beszel 体系时**每台必须（`.env` 设 `ENABLE_BESZEL=true`） |
+| `beszel-agent` | **仅当启用 Beszel 体系时**每台必须（`.env` 设 `BESZEL_ENABLE=true`） |
 
 除此之外没有「每台必须」的业务服务。
 
@@ -39,7 +39,7 @@
 # 私有库需 Deploy Key 或 PAT
 git clone https://github.com/optizephyr/homelab.git /opt/homelab
 cd /opt/homelab
-cp .env.example .env   # 填 PROFILES、DOMAIN 等
+cp .env.example .env   # 填 PROFILES、CADDY_DOMAIN 等
 chmod 600 .env
 ./bootstrap.sh
 ```
@@ -60,6 +60,7 @@ chmod 600 .env
 | `tailscale-derp` | 自建 DERP，仅 VPS（按需） | [`services/tailscale-derp/README.md`](services/tailscale-derp/README.md) |
 | `easytier-relay` | EasyTier 中转 VPS（按需） | [`services/easytier-relay/README.md`](services/easytier-relay/README.md) |
 | `radicale` | CalDAV / CardDAV（按需） | [`services/radicale/README.md`](services/radicale/README.md) |
+| `mailhub` | 定时处理邮件并分发日历 / 待办 / Bark（按需） | [`services/mailhub/README.md`](services/mailhub/README.md) |
 
 ```bash
 # 由 scripts/up.sh 按 PROFILES 展开，例如：
@@ -73,9 +74,9 @@ chmod 600 .env
 
 ## 子域名（Caddy）
 
-`DOMAIN` 下按服务访问（需 DNS 指向本机且对应 profile 已启用），详见 [`caddy/README.md`](caddy/README.md)：
+`CADDY_DOMAIN` 下按服务访问（需 DNS 指向本机且对应 profile 已启用），详见 [`caddy/README.md`](caddy/README.md)：
 
-`uptime` / `bark` / `monitor` / `qinglong` / `terminal` / `caldav` + `.${DOMAIN}`
+`uptime` / `bark` / `monitor` / `qinglong` / `terminal` / `caldav` + `.${CADDY_DOMAIN}`
 
 ## 开放项
 

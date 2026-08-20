@@ -9,7 +9,7 @@
 ```bash
 # .env
 PROFILES=caddy,beszel,beszel-agent,...
-ENABLE_BESZEL=true
+BESZEL_ENABLE=true
 # agent 连本机 hub 时：
 BESZEL_HUB_URL=https://monitor.example.com
 BESZEL_TOKEN=<在 hub UI 创建 agent 后得到>
@@ -19,12 +19,12 @@ BESZEL_TOKEN=<在 hub UI 创建 agent 后得到>
 
 ```bash
 PROFILES=caddy,beszel-agent
-ENABLE_BESZEL=true
+BESZEL_ENABLE=true
 BESZEL_HUB_URL=https://monitor.example.com
 BESZEL_TOKEN=<token>
 ```
 
-`ENABLE_BESZEL=true` 时，`bootstrap.sh` 会强制要求 `PROFILES` 含 `beszel-agent`。
+`BESZEL_ENABLE=true` 时，`bootstrap.sh` 会强制要求 `PROFILES` 含 `beszel-agent`。
 
 ## 关键参数
 
@@ -35,7 +35,7 @@ BESZEL_TOKEN=<token>
 
 | 变量 | 用在 | 说明 |
 |------|------|------|
-| `ENABLE_BESZEL` | bootstrap | `true` 时校验 agent profile |
+| `BESZEL_ENABLE` | bootstrap | `true` 时校验 agent profile |
 | `BESZEL_HUB_URL` | agent | Hub 公网/可达 URL |
 | `BESZEL_TOKEN` | agent | Hub 签发的 agent token |
 
@@ -49,11 +49,11 @@ BESZEL_TOKEN=<token>
 
 ## Caddy（仅 hub）
 
-`monitor.${DOMAIN}` → `beszel:8090`。agent **不走** Caddy。`BESZEL_HUB_URL` 应设为 `https://monitor.${DOMAIN}`（或当前实际对外 URL）。
+`monitor.${CADDY_DOMAIN}` → `beszel:8090`。agent **不走** Caddy。`BESZEL_HUB_URL` 应设为 `https://monitor.${CADDY_DOMAIN}`（或当前实际对外 URL）。
 
 ## 事后核对清单
 
 1. 本机角色：只 hub、只 agent、还是两者都有  
-2. `ENABLE_BESZEL` 与 `PROFILES` 是否一致  
+2. `BESZEL_ENABLE` 与 `PROFILES` 是否一致  
 3. `BESZEL_HUB_URL` / `BESZEL_TOKEN` 是否仍有效（换 hub 或重建卷后要重发 token）  
 4. Hub 机 Caddy 与 DNS 是否仍指向该容器

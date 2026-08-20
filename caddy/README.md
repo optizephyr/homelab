@@ -7,17 +7,17 @@
 ```bash
 # .env
 PROFILES=caddy,...
-DOMAIN=example.com
+CADDY_DOMAIN=example.com
 ```
 
-启动前，将以下子域名（或 `*.${DOMAIN}`）解析到本机，并放行 TCP 80/443 与 UDP 443：
+启动前，将以下子域名（或 `*.${CADDY_DOMAIN}`）解析到本机，并放行 TCP 80/443 与 UDP 443：
 
-- `uptime.${DOMAIN}`
-- `bark.${DOMAIN}`
-- `monitor.${DOMAIN}`
-- `qinglong.${DOMAIN}`
-- `terminal.${DOMAIN}`
-- `caldav.${DOMAIN}`
+- `uptime.${CADDY_DOMAIN}`
+- `bark.${CADDY_DOMAIN}`
+- `monitor.${CADDY_DOMAIN}`
+- `qinglong.${CADDY_DOMAIN}`
+- `terminal.${CADDY_DOMAIN}`
+- `caldav.${CADDY_DOMAIN}`
 
 ```bash
 ./bootstrap.sh
@@ -29,12 +29,12 @@ Caddy 自动通过 ACME 申请并续期公开信任的证书，HTTP 自动跳转
 
 | 访问地址 | Profile | Upstream |
 |----------|---------|----------|
-| `https://uptime.${DOMAIN}` | `uptime-kuma` | `uptime-kuma:3001` |
-| `https://bark.${DOMAIN}` | `bark` | `bark-server:8080` |
-| `https://monitor.${DOMAIN}` | `beszel` | `beszel:8090` |
-| `https://qinglong.${DOMAIN}` | `qinglong` | `qinglong:5700` |
-| `https://terminal.${DOMAIN}` | `termix` | `termix:8080` |
-| `https://caldav.${DOMAIN}` | `radicale` | `radicale:5232` |
+| `https://uptime.${CADDY_DOMAIN}` | `uptime-kuma` | `uptime-kuma:3001` |
+| `https://bark.${CADDY_DOMAIN}` | `bark` | `bark-server:8080` |
+| `https://monitor.${CADDY_DOMAIN}` | `beszel` | `beszel:8090` |
+| `https://qinglong.${CADDY_DOMAIN}` | `qinglong` | `qinglong:5700` |
+| `https://terminal.${CADDY_DOMAIN}` | `termix` | `termix:8080` |
+| `https://caldav.${CADDY_DOMAIN}` | `radicale` | `radicale:5232` |
 
 `beszel-agent`、`tailscale-derp` 与 `easytier-relay` 不经过 Caddy。
 

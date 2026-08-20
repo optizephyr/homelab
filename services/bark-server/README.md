@@ -29,7 +29,7 @@ PROFILES=caddy,bark,...
 
 ## Caddy
 
-`bark.${DOMAIN}` → `bark-server:8080`（见 `caddy/Caddyfile`）。确认端口：
+`bark.${CADDY_DOMAIN}` → `bark-server:8080`（见 `caddy/Caddyfile`）。确认端口：
 
 ```bash
 docker compose --profile bark exec bark-server sh -c 'ss -lntp || netstat -lntp'
@@ -38,6 +38,6 @@ docker compose --profile bark exec bark-server sh -c 'ss -lntp || netstat -lntp'
 ## 事后核对清单
 
 1. `PROFILES` 含 `bark`（不是 `bark-server`）  
-2. DNS / Caddy：`bark.${DOMAIN}` → `bark-server:8080`
-3. 手机 Bark App 的 Server URL 指向 `https://bark.${DOMAIN}`  
+2. DNS / Caddy：`bark.${CADDY_DOMAIN}` → `bark-server:8080`
+3. 手机 Bark App 的 Server URL 指向 `https://bark.${CADDY_DOMAIN}`  
 4. Uptime Kuma / 其它告警的 webhook 是否仍用本地址或 `BARK_EDGE_URL`  

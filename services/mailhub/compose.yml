@@ -1,0 +1,39 @@
+# Mailhub — fetch mail, resolve important messages, and dispatch reminders.
+# Source: https://github.com/optizephyr/mailhub
+services:
+  mailhub:
+    profiles: ["mailhub"]
+    build:
+      context: https://github.com/optizephyr/mailhub.git#master
+    container_name: mailhub
+    restart: unless-stopped
+    init: true
+    stop_grace_period: 1m
+    environment:
+      TZ: ${MAILHUB_TZ:-Asia/Shanghai}
+      MAILHUB_INTERVAL_SECONDS: ${MAILHUB_INTERVAL_SECONDS:-900}
+      QQ_EMAIL: ${MAILHUB_QQ_EMAIL:-}
+      QQ_AUTH_CODE: ${MAILHUB_QQ_AUTH_CODE:-}
+      CALDAV_URL: ${MAILHUB_CALDAV_URL:-}
+      CALDAV_USERNAME: ${MAILHUB_CALDAV_USERNAME:-}
+      CALDAV_PASSWORD: ${MAILHUB_CALDAV_PASSWORD:-}
+      LLM_API_BASE: ${MAILHUB_LLM_API_BASE:-}
+      LLM_API_KEY: ${MAILHUB_LLM_API_KEY:-}
+      BARK_SERVER_URL: ${MAILHUB_BARK_SERVER_URL:-}
+      BARK_KEY: ${MAILHUB_BARK_KEY:-}
+    volumes:
+      - ./config.yaml:/app/config.yaml:ro
+      - mailhub-data:/app/data
+    networks:
+      - homelab
+    command:
+      - sh
+      - -c
+      - while true; do mailhub sync; sleep "$${MAILHUB_INTERVAL_SECONDS:-900}"; done
+
+volumes:
+  mailhub-data:
+
+networks:
+  homelab:
+    name: homelab

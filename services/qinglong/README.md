@@ -32,13 +32,13 @@ PROFILES=caddy,qinglong,...
 
 ## Caddy
 
-`qinglong.${DOMAIN}` → `qinglong:5700`；独立子域名时保持 `QINGLONG_BASE_URL=/`。
+`qinglong.${CADDY_DOMAIN}` → `qinglong:5700`；独立子域名时保持 `QINGLONG_BASE_URL=/`。
 
 走路径前缀时，`QINGLONG_BASE_URL` 必须与 Caddy 路由一致（例如都是 `/ql/`）。
 
 ## 事后核对清单
 
 1. `PROFILES` 含 `qinglong`  
-2. DNS / Caddy：`qinglong.${DOMAIN}`；`QINGLONG_BASE_URL` 与访问路径一致
+2. DNS / Caddy：`qinglong.${CADDY_DOMAIN}`；`QINGLONG_BASE_URL` 与访问路径一致
 3. 卷 `qinglong-data` 是否在本机  
 4. 面板内定时任务依赖的外网 / Token / 仓库地址是否仍有效  

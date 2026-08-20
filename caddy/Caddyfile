@@ -1,27 +1,27 @@
 # Caddy obtains and renews public certificates automatically.
 # All hostnames below must resolve to this host, and ports 80/443 must be open.
 
-uptime.{$DOMAIN} {
+uptime.{$CADDY_DOMAIN} {
 	reverse_proxy uptime-kuma:3001
 }
 
-bark.{$DOMAIN} {
+bark.{$CADDY_DOMAIN} {
 	reverse_proxy bark-server:8080
 }
 
-monitor.{$DOMAIN} {
+monitor.{$CADDY_DOMAIN} {
 	reverse_proxy beszel:8090
 }
 
-qinglong.{$DOMAIN} {
+qinglong.{$CADDY_DOMAIN} {
 	reverse_proxy qinglong:5700
 }
 
-terminal.{$DOMAIN} {
+terminal.{$CADDY_DOMAIN} {
 	reverse_proxy termix:8080
 }
 
-caldav.{$DOMAIN} {
+caldav.{$CADDY_DOMAIN} {
 	redir /.well-known/caldav / 301
 	redir /.well-known/carddav / 301
 

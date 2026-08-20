@@ -4,13 +4,13 @@
 services:
   tailscale-derp:
     profiles: ["tailscale-derp"]
-    image: ${DERPER_IMAGE:-ghcr.io/fredliang44/derper:latest}
+    image: ${TAILSCALE_DERP_IMAGE:-ghcr.io/fredliang44/derper:latest}
     container_name: tailscale-derp
     restart: unless-stopped
     network_mode: host
     environment:
-      DERP_DOMAIN: ${DERP_DOMAIN:-}
-      DERP_VERIFY_CLIENTS: ${DERP_VERIFY_CLIENTS:-false}
+      DERP_DOMAIN: ${TAILSCALE_DERP_DOMAIN:-}
+      DERP_VERIFY_CLIENTS: ${TAILSCALE_DERP_VERIFY_CLIENTS:-false}
     volumes:
       - derper-certs:/app/certs
       - derper-data:/var/lib/derper

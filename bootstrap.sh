@@ -48,13 +48,13 @@ if ! profile_has caddy; then
   exit 1
 fi
 
-if [[ -z "${DOMAIN:-}" || "${DOMAIN}" == "example.com" ]]; then
-  echo "Set DOMAIN in .env to the public base domain before starting Caddy." >&2
+if [[ -z "${CADDY_DOMAIN:-}" || "${CADDY_DOMAIN}" == "example.com" ]]; then
+  echo "Set CADDY_DOMAIN in .env to the public base domain before starting Caddy." >&2
   exit 1
 fi
 
-if [[ "${ENABLE_BESZEL:-false}" == "true" ]] && ! profile_has beszel-agent; then
-  echo "ENABLE_BESZEL=true but PROFILES lacks 'beszel-agent' (required on every host)." >&2
+if [[ "${BESZEL_ENABLE:-false}" == "true" ]] && ! profile_has beszel-agent; then
+  echo "BESZEL_ENABLE=true but PROFILES lacks 'beszel-agent' (required on every host)." >&2
   exit 1
 fi
 
@@ -68,6 +68,40 @@ if profile_has radicale; then
   fi
 fi
 
+if profile_has mailhub; then
+  if [[ -z "${MAILHUB_QQ_EMAIL:-}" || -z "${MAILHUB_QQ_AUTH_CODE:-}" ]]; then
+    echo "mailhub requires MAILHUB_QQ_EMAIL and MAILHUB_QQ_AUTH_CODE in .env." >&2
+    exit 1
+  fi
+
+  mailhub_interval="${MAILHUB_INTERVAL_SECONDS:-900}"
+  if [[ ! "$mailhub_interval" =~ ^[1-9][0-9]*$ ]]; then
+    echo "MAILHUB_INTERVAL_SECONDS must be a positive integer." >&2
+    exit 1
+  fi
+
+  caldav_count=0
+  [[ -n "${MAILHUB_CALDAV_URL:-}" ]] && ((caldav_count += 1))
+  [[ -n "${MAILHUB_CALDAV_USERNAME:-}" ]] && ((caldav_count += 1))
+  [[ -n "${MAILHUB_CALDAV_PASSWORD:-}" ]] && ((caldav_count += 1))
+  if ((caldav_count > 0 && caldav_count < 3)); then
+    echo "mailhub CalDAV requires URL, username, and password together." >&2
+    exit 1
+  fi
+
+  if { [[ -n "${MAILHUB_LLM_API_BASE:-}" ]] && [[ -z "${MAILHUB_LLM_API_KEY:-}" ]]; } ||
+    { [[ -z "${MAILHUB_LLM_API_BASE:-}" ]] && [[ -n "${MAILHUB_LLM_API_KEY:-}" ]]; }; then
+    echo "mailhub LLM requires MAILHUB_LLM_API_BASE and MAILHUB_LLM_API_KEY together." >&2
+    exit 1
+  fi
+
+  if { [[ -n "${MAILHUB_BARK_SERVER_URL:-}" ]] && [[ -z "${MAILHUB_BARK_KEY:-}" ]]; } ||
+    { [[ -z "${MAILHUB_BARK_SERVER_URL:-}" ]] && [[ -n "${MAILHUB_BARK_KEY:-}" ]]; }; then
+    echo "mailhub Bark requires MAILHUB_BARK_SERVER_URL and MAILHUB_BARK_KEY together." >&2
+    exit 1
+  fi
+fi
+
 echo "Host baseline reminder: SSH, Docker, firewall (22; +80/443 for Caddy HTTPS)."
 "${ROOT}/scripts/up.sh"
-echo "Done. Caddy serves HTTPS subdomains under DOMAIN=${DOMAIN} (e.g. uptime.${DOMAIN})."
+echo "Done. Caddy serves HTTPS subdomains under CADDY_DOMAIN=${CADDY_DOMAIN} (e.g. uptime.${CADDY_DOMAIN})."

@@ -1,0 +1,19 @@
+# Mail scanning
+lookback_days: 14
+mail_limit: 80
+
+# Reminder lead time in minutes
+reminder_minutes: 30
+
+# Search existing calendar events when local state has no match; 0 disables it
+calendar_scan_days: 90
+
+# Unique checkpoint ID for this mailbox
+source_id: qq.default
+
+# Exact CalDAV collection display names; blank disables that channel
+calendar_name: 秋招
+reminders_list: 秋招
+
+# Used only when both MAILHUB_LLM_API_BASE and MAILHUB_LLM_API_KEY are set
+llm_model: MiniMax-M2.7-highspeed

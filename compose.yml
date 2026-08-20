@@ -14,6 +14,7 @@ include:
   - path: services/tailscale-derp/compose.yml
   - path: services/easytier-relay/compose.yml
   - path: services/radicale/compose.yml
+  - path: services/mailhub/compose.yml
 
 networks:
   homelab:

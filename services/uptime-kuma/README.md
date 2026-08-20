@@ -7,7 +7,7 @@
 ```bash
 # .env
 PROFILES=caddy,uptime-kuma,...
-DOMAIN=example.com
+CADDY_DOMAIN=example.com
 ```
 
 ```bash
@@ -29,11 +29,11 @@ DOMAIN=example.com
 
 ## Caddy
 
-`uptime.${DOMAIN}` → `uptime-kuma:3001`（WebSocket 头已在共用 snippet 中）。
+`uptime.${CADDY_DOMAIN}` → `uptime-kuma:3001`（WebSocket 头已在共用 snippet 中）。
 
 ## 事后核对清单
 
 1. `PROFILES` 含 `uptime-kuma`  
-2. DNS / Caddy：`uptime.${DOMAIN}` → `uptime-kuma:3001`
+2. DNS / Caddy：`uptime.${CADDY_DOMAIN}` → `uptime-kuma:3001`
 3. 卷 `uptime-kuma-data` 是否在本机（换机需迁移卷或接受重装）  
 4. 告警 webhook 是否仍指向当前 Bark / 边缘地址  

@@ -10,10 +10,10 @@
 ```bash
 # .env
 PROFILES=caddy,tailscale-derp,...   # caddy 仍是基线；DERP 本身用 host 网络
-DERP_DOMAIN=derp.example.com
-DERP_VERIFY_CLIENTS=false
+TAILSCALE_DERP_DOMAIN=derp.example.com
+TAILSCALE_DERP_VERIFY_CLIENTS=false
 # 可选换镜像
-# DERPER_IMAGE=ghcr.io/fredliang44/derper:latest
+# TAILSCALE_DERP_IMAGE=ghcr.io/fredliang44/derper:latest
 ```
 
 ```bash
@@ -24,9 +24,9 @@ DERP_VERIFY_CLIENTS=false
 
 | 变量 | 默认 | 说明 |
 |------|------|------|
-| `DERP_DOMAIN` | 空 | DERP 对外域名（证书 / 客户端配置） |
-| `DERP_VERIFY_CLIENTS` | `false` | 是否校验 Tailscale 客户端 |
-| `DERPER_IMAGE` | `ghcr.io/fredliang44/derper:latest` | derper 镜像 |
+| `TAILSCALE_DERP_DOMAIN` | 空 | DERP 对外域名（证书 / 客户端配置）；写入容器 `DERP_DOMAIN` |
+| `TAILSCALE_DERP_VERIFY_CLIENTS` | `false` | 是否校验 Tailscale 客户端；写入容器 `DERP_VERIFY_CLIENTS` |
+| `TAILSCALE_DERP_IMAGE` | `ghcr.io/fredliang44/derper:latest` | derper 镜像 |
 
 | 资源 | 说明 |
 |------|------|
@@ -37,13 +37,13 @@ DERP_VERIFY_CLIENTS=false
 
 ## 防火墙 / Tailscale
 
-按 derper 文档放行 HTTP(S) 与 STUN/UDP 端口；在 Tailscale ACL / DERP map 里登记 `DERP_DOMAIN`。
+按 derper 文档放行 HTTP(S) 与 STUN/UDP 端口；在 Tailscale ACL / DERP map 里登记 `TAILSCALE_DERP_DOMAIN`。
 
 Caddy 基线可并存，但 **DERP 流量通常不经过** `homelab-caddy`（host 网络直出）。
 
 ## 事后核对清单
 
-1. `DERP_DOMAIN`、DNS、证书是否仍匹配  
-2. `DERP_VERIFY_CLIENTS` 与当时安全策略是否一致  
+1. `TAILSCALE_DERP_DOMAIN`、DNS、证书是否仍匹配  
+2. `TAILSCALE_DERP_VERIFY_CLIENTS` 与当时安全策略是否一致  
 3. Tailscale 控制台 / 自建 DERP map 是否仍指向本机  
 4. 宿主机防火墙 UDP/TCP 是否仍开放  
