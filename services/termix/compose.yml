@@ -7,7 +7,7 @@ services:
     container_name: termix
     restart: unless-stopped
     environment:
-      # Align with nginx proxy_pass http://termix:8080
+      # Align with Caddy reverse_proxy termix:8080
       PORT: "8080"
     networks:
       - homelab

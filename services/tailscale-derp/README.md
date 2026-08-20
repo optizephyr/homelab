@@ -9,7 +9,7 @@
 
 ```bash
 # .env
-PROFILES=nginx,tailscale-derp,...   # nginx 仍是基线；DERP 本身用 host 网络
+PROFILES=caddy,tailscale-derp,...   # caddy 仍是基线；DERP 本身用 host 网络
 DERP_DOMAIN=derp.example.com
 DERP_VERIFY_CLIENTS=false
 # 可选换镜像
@@ -39,7 +39,7 @@ DERP_VERIFY_CLIENTS=false
 
 按 derper 文档放行 HTTP(S) 与 STUN/UDP 端口；在 Tailscale ACL / DERP map 里登记 `DERP_DOMAIN`。
 
-Nginx 基线可并存，但 **DERP 流量通常不经过** `homelab-nginx`（host 网络直出）。
+Caddy 基线可并存，但 **DERP 流量通常不经过** `homelab-caddy`（host 网络直出）。
 
 ## 事后核对清单
 

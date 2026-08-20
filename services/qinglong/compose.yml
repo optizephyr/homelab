@@ -16,7 +16,7 @@ services:
       QlBaseUrl: ${QINGLONG_BASE_URL:-/}
     networks:
       - homelab
-    # Expose only via Nginx on the edge network (default panel port 5700).
+    # Expose only via Caddy on the homelab network (default panel port 5700).
     # ports:
     #   - "5700:5700"
 

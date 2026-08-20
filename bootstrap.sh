@@ -43,8 +43,13 @@ profile_has() {
   return 1
 }
 
-if ! profile_has nginx; then
-  echo "Baseline: every non-edge host must include profile 'nginx' in PROFILES." >&2
+if ! profile_has caddy; then
+  echo "Baseline: every non-edge host must include profile 'caddy' in PROFILES." >&2
+  exit 1
+fi
+
+if [[ -z "${DOMAIN:-}" || "${DOMAIN}" == "example.com" ]]; then
+  echo "Set DOMAIN in .env to the public base domain before starting Caddy." >&2
   exit 1
 fi
 
@@ -63,6 +68,6 @@ if profile_has radicale; then
   fi
 fi
 
-echo "Host baseline reminder: SSH, Docker, firewall (22; +80/443 if public HTTP)."
+echo "Host baseline reminder: SSH, Docker, firewall (22; +80/443 for Caddy HTTPS)."
 "${ROOT}/scripts/up.sh"
-echo "Done. Nginx subdomains use DOMAIN=${DOMAIN:-unset} (e.g. uptime.${DOMAIN:-example.com})."
+echo "Done. Caddy serves HTTPS subdomains under DOMAIN=${DOMAIN} (e.g. uptime.${DOMAIN})."

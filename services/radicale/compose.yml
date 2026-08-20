@@ -13,7 +13,7 @@ services:
       - radicale-data:/var/lib/radicale
     networks:
       - homelab
-    # Expose only via Nginx on the homelab network (container port 5232).
+    # Expose only via Caddy on the homelab network (container port 5232).
     # ports:
     #   - "5232:5232"
 

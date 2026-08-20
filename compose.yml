@@ -5,7 +5,7 @@
 name: homelab
 
 include:
-  - path: nginx/compose.yml
+  - path: caddy/compose.yml
   - path: services/uptime-kuma/compose.yml
   - path: services/bark-server/compose.yml
   - path: services/beszel/compose.yml

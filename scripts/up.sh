@@ -13,7 +13,7 @@ fi
 # shellcheck disable=SC1091
 set -a && source .env && set +a
 
-PROFILES="${PROFILES:-nginx}"
+PROFILES="${PROFILES:-caddy}"
 ARGS=()
 IFS=',' read -ra PARTS <<< "$PROFILES"
 for p in "${PARTS[@]}"; do

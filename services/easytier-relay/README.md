@@ -8,7 +8,7 @@ EasyTier 中转 / 公网节点（VPS）。边缘 WSS 备用见 [`edge/easytier-w
 
 ```bash
 # .env
-PROFILES=nginx,easytier-relay,...
+PROFILES=caddy,easytier-relay,...
 EASYTIER_NETWORK_NAME=<网络名>
 EASYTIER_NETWORK_SECRET=<密钥>
 ```

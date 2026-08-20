@@ -1,6 +1,6 @@
 # homelab
 
-轻量自托管栈：Ubuntu + Docker Compose + Nginx。  
+轻量自托管栈：Ubuntu + Docker Compose + Caddy。
 **仓库是可插拔服务目录；某次部署启用哪些业务，由该机 `.env` 里的 `PROFILES` 决定。**
 
 仓库：https://github.com/optizephyr/homelab.git
@@ -28,7 +28,7 @@
 
 | Profile | 规则 |
 |---------|------|
-| `nginx` | **每台必须**（`PROFILES` 必须包含） |
+| `caddy` | **每台必须**（`PROFILES` 必须包含） |
 | `beszel-agent` | **仅当启用 Beszel 体系时**每台必须（`.env` 设 `ENABLE_BESZEL=true`） |
 
 除此之外没有「每台必须」的业务服务。
@@ -50,7 +50,7 @@ chmod 600 .env
 
 | Profile | 说明 | 部署备忘 |
 |---------|------|----------|
-| `nginx` | **每台必须** — 反代 / HTTPS 入口 | [`nginx/README.md`](nginx/README.md) |
+| `caddy` | **每台必须** — 自动 HTTPS / 反代入口 | [`caddy/README.md`](caddy/README.md) |
 | `beszel-agent` | 启用 Beszel 时每台必须 | [`services/beszel/README.md`](services/beszel/README.md) |
 | `beszel` | Beszel hub（少数机器） | 同上 |
 | `uptime-kuma` | 主监控（按需） | [`services/uptime-kuma/README.md`](services/uptime-kuma/README.md) |
@@ -63,7 +63,7 @@ chmod 600 .env
 
 ```bash
 # 由 scripts/up.sh 按 PROFILES 展开，例如：
-# PROFILES=nginx,beszel-agent,uptime-kuma
+# PROFILES=caddy,beszel-agent,uptime-kuma
 ./bootstrap.sh
 ```
 
@@ -71,14 +71,14 @@ chmod 600 .env
 
 见 [`edge/README.md`](edge/README.md)。完整项目请 fork 上游，勿把边缘源码放进本库。
 
-## 子域名（Nginx）
+## 子域名（Caddy）
 
-`DOMAIN` 下按服务访问（需 DNS 指向本机且对应 profile 已启用），详见 [`nginx/README.md`](nginx/README.md)：
+`DOMAIN` 下按服务访问（需 DNS 指向本机且对应 profile 已启用），详见 [`caddy/README.md`](caddy/README.md)：
 
-`uptime` / `bark` / `beszel` / `qinglong` / `termix` / `radicale` + `.${DOMAIN}`
+`uptime` / `bark` / `monitor` / `qinglong` / `terminal` / `caldav` + `.${DOMAIN}`
 
 ## 开放项
 
 - 是否使用长期小机、如何拆分服务
-- Nginx ↔ 边缘域名分工（TLS / Certbot）
+- Caddy ↔ 边缘域名分工
 - 具体 fork URL（填入 `edge/*.md`）

@@ -1,0 +1,26 @@
+services:
+  caddy:
+    profiles: ["caddy"]
+    image: caddy:2-alpine
+    container_name: homelab-caddy
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    environment:
+      DOMAIN: ${DOMAIN:?Set DOMAIN in .env}
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy-data:/data
+      - caddy-config:/config
+    networks:
+      - homelab
+
+volumes:
+  caddy-data:
+  caddy-config:
+
+networks:
+  homelab:
+    name: homelab
