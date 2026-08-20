@@ -1,10 +1,10 @@
 # Mailhub — fetch mail, resolve important messages, and dispatch reminders.
 # Source: https://github.com/optizephyr/mailhub
+# Pull a prebuilt image (Aliyun ACR on domestic VPS). Do not build from GitHub.
 services:
   mailhub:
     profiles: ["mailhub"]
-    build:
-      context: https://github.com/optizephyr/mailhub.git#master
+    image: ${MAILHUB_IMAGE}
     container_name: mailhub
     restart: unless-stopped
     init: true

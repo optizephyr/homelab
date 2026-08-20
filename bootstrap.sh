@@ -69,6 +69,10 @@ if profile_has radicale; then
 fi
 
 if profile_has mailhub; then
+  if [[ -z "${MAILHUB_IMAGE:-}" ]]; then
+    echo "mailhub requires MAILHUB_IMAGE in .env (Aliyun ACR or other prebuilt image)." >&2
+    exit 1
+  fi
   if [[ -z "${MAILHUB_QQ_EMAIL:-}" || -z "${MAILHUB_QQ_AUTH_CODE:-}" ]]; then
     echo "mailhub requires MAILHUB_QQ_EMAIL and MAILHUB_QQ_AUTH_CODE in .env." >&2
     exit 1

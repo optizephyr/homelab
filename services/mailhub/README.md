@@ -10,6 +10,7 @@
 # .env
 PROFILES=caddy,mailhub,radicale
 
+MAILHUB_IMAGE=registry.cn-hangzhou.aliyuncs.com/<namespace>/mailhub:<tag>
 MAILHUB_QQ_EMAIL=example@qq.com
 MAILHUB_QQ_AUTH_CODE=QQ邮箱授权码
 
@@ -23,10 +24,10 @@ MAILHUB_CALDAV_PASSWORD=change-me
 # MAILHUB_BARK_KEY=
 ```
 
-先在 Radicale 创建与 `config.yaml` 中名称完全相同的日历和任务列表，再启动：
+先在 Radicale 创建与 `config.yaml` 中名称完全相同的日历和任务列表。私有 ACR 先在宿主机 `docker login`，再启动（不要在这台机器上从 GitHub 构建）：
 
 ```bash
-./scripts/up.sh --build
+./scripts/up.sh
 ```
 
 `mailhub` 没有 Web 入口，不需要 Caddy 子域名；加入 `homelab` 网络只是为了访问同机的 Radicale 和 Bark。
@@ -36,13 +37,13 @@ MAILHUB_CALDAV_PASSWORD=change-me
 | 项 | 来源 | 说明 |
 |----|------|------|
 | Profile | `mailhub` | |
-| 源码 | `optizephyr/mailhub` 的 `master` 分支 | 本地构建，无上游预构建镜像 |
+| 镜像 | `MAILHUB_IMAGE` | 阿里云预构建镜像；必填 |
 | 调度间隔 | `MAILHUB_INTERVAL_SECONDS` | 默认 900 秒 |
 | 时区 | `MAILHUB_TZ` | 默认 `Asia/Shanghai` |
 | 行为配置 | `config.yaml` → `/app/config.yaml` | 扫描范围、collection 名、模型名 |
 | 数据卷 | `mailhub-data` → `/app/data` | 游标、幂等状态与 JSONL 日志 |
 
-QQ 邮箱地址和授权码是必填项，`bootstrap.sh` 会在启动前检查。CalDAV、LLM 和 Bark 均需填写完整参数组；只填一部分会被拒绝。
+`MAILHUB_IMAGE`、QQ 邮箱地址和授权码是必填项，`bootstrap.sh` 会在启动前检查。CalDAV、LLM 和 Bark 均需填写完整参数组；只填一部分会被拒绝。
 
 ## 首次核对
 
@@ -64,15 +65,15 @@ docker compose --profile mailhub exec mailhub \
   sh -c 'tail -n 20 /app/data/logs/mail_lifecycle.jsonl'
 ```
 
-更新上游代码后重新构建：
+更新镜像：改 `.env` 里的 `MAILHUB_IMAGE` 标签（或保持 `latest`），再拉一次：
 
 ```bash
-./scripts/up.sh --build
+./scripts/up.sh --pull always
 ```
 
 ## 事后核对清单
 
-1. `PROFILES` 含 `mailhub`
+1. `PROFILES` 含 `mailhub`，且 `MAILHUB_IMAGE` 已指向阿里云镜像
 2. QQ 邮箱已开启 IMAP/SMTP，填写的是授权码而不是登录密码
 3. CalDAV 日历 / 任务列表显示名称与 `config.yaml` 完全一致
 4. `mailhub-data` 卷只由一个 Mailhub 实例使用
