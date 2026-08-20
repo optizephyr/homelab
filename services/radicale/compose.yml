@@ -1,0 +1,25 @@
+# Radicale — CalDAV / CardDAV
+# Docs: https://radicale.org/master.html
+#       https://github.com/Kozea/Radicale
+services:
+  radicale:
+    profiles: ["radicale"]
+    image: ghcr.io/kozea/radicale:stable
+    container_name: radicale
+    restart: unless-stopped
+    volumes:
+      - ./config/config:/etc/radicale/config:ro
+      - ./config/users:/etc/radicale/users:ro
+      - radicale-data:/var/lib/radicale
+    networks:
+      - homelab
+    # Expose only via Nginx on the homelab network (container port 5232).
+    # ports:
+    #   - "5232:5232"
+
+volumes:
+  radicale-data:
+
+networks:
+  homelab:
+    name: homelab

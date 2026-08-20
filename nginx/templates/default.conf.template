@@ -1,0 +1,102 @@
+# Generated from templates/default.conf.template via nginx image envsubst.
+# Subdomains: <service>.${DOMAIN} → containers on the homelab network.
+# Upstream hostnames resolve at request time (Docker DNS) so disabled
+# profiles do not block nginx from starting.
+
+# Docker embedded DNS
+resolver 127.0.0.11 valid=10s ipv6=off;
+
+server {
+    listen 80 default_server;
+    server_name _;
+
+    location / {
+        return 200 'homelab-stack nginx ok\n';
+        add_header Content-Type text/plain;
+    }
+}
+
+# uptime-kuma → https://uptime.${DOMAIN}
+server {
+    listen 80;
+    server_name uptime.${DOMAIN};
+
+    location / {
+        set $upstream http://uptime-kuma:3001;
+        proxy_pass $upstream;
+        include /etc/nginx/snippets/proxy_params.conf;
+    }
+}
+
+# bark-server → https://bark.${DOMAIN}
+server {
+    listen 80;
+    server_name bark.${DOMAIN};
+
+    location / {
+        set $upstream http://bark-server:8080;
+        proxy_pass $upstream;
+        include /etc/nginx/snippets/proxy_params.conf;
+    }
+}
+
+# beszel hub → https://beszel.${DOMAIN}
+server {
+    listen 80;
+    server_name beszel.${DOMAIN};
+
+    location / {
+        set $upstream http://beszel:8090;
+        proxy_pass $upstream;
+        include /etc/nginx/snippets/proxy_params.conf;
+    }
+}
+
+# qinglong → https://qinglong.${DOMAIN}  (QlBaseUrl=/)
+server {
+    listen 80;
+    server_name qinglong.${DOMAIN};
+
+    location / {
+        set $upstream http://qinglong:5700;
+        proxy_pass $upstream;
+        include /etc/nginx/snippets/proxy_params.conf;
+    }
+}
+
+# termix → https://termix.${DOMAIN}  (container PORT=8080)
+server {
+    listen 80;
+    server_name termix.${DOMAIN};
+
+    location / {
+        set $upstream http://termix:8080;
+        proxy_pass $upstream;
+        include /etc/nginx/snippets/proxy_params.conf;
+    }
+}
+
+# radicale → https://radicale.${DOMAIN}  (CalDAV / CardDAV)
+# At site root: do not set X-Script-Name (see radicale.org reverse-proxy docs).
+server {
+    listen 80;
+    server_name radicale.${DOMAIN};
+
+    client_max_body_size 100m;
+
+    location /.well-known/caldav {
+        return 301 /;
+    }
+    location /.well-known/carddav {
+        return 301 /;
+    }
+
+    location / {
+        set $upstream http://radicale:5232;
+        proxy_pass $upstream;
+        include /etc/nginx/snippets/proxy_params.conf;
+        proxy_set_header X-Forwarded-Host $host;
+        proxy_set_header X-Forwarded-Port $server_port;
+        proxy_pass_header Authorization;
+    }
+}

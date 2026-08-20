@@ -1,0 +1,28 @@
+# Qinglong — timed task panel (Python3 / JS / Shell / TS)
+# Docs: https://github.com/whyour/qinglong
+#       https://qinglong.online/guide/getting-started/installation-guide/docker-compose
+services:
+  qinglong:
+    profiles: ["qinglong"]
+    # alpine: whyour/qinglong:latest — use debian if alpine deps are insufficient
+    # or you need --user qinglong (non-root)
+    image: whyour/qinglong:latest
+    container_name: qinglong
+    restart: unless-stopped
+    volumes:
+      - qinglong-data:/ql/data
+    environment:
+      # Deploy path; must start and end with /. Use '/' behind a dedicated subdomain.
+      QlBaseUrl: ${QINGLONG_BASE_URL:-/}
+    networks:
+      - homelab
+    # Expose only via Nginx on the edge network (default panel port 5700).
+    # ports:
+    #   - "5700:5700"
+
+volumes:
+  qinglong-data:
+
+networks:
+  homelab:
+    name: homelab

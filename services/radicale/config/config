@@ -1,0 +1,27 @@
+# Radicale config — see https://radicale.org/master.html
+# Users file is bind-mounted at /etc/radicale/users (not in Git).
+
+[server]
+hosts = 0.0.0.0:5232, [::]:5232
+max_connections = 20
+max_content_length = 100000000
+timeout = 30
+
+[auth]
+type = htpasswd
+htpasswd_filename = /etc/radicale/users
+htpasswd_encryption = autodetect
+delay = 1
+
+[rights]
+type = owner_only
+
+[storage]
+filesystem_folder = /var/lib/radicale/collections
+
+[web]
+type = internal
+
+[logging]
+level = info
+mask_passwords = True

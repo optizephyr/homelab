@@ -6,9 +6,13 @@ services:
     image: ${TERMIX_IMAGE:-public.ecr.aws/termix/termix:placeholder}
     container_name: termix
     restart: unless-stopped
+    environment:
+      # Align with nginx proxy_pass http://termix:8080
+      PORT: "8080"
     networks:
-      - edge
+      - homelab
+
 
 networks:
-  edge:
-    name: homelab_edge
+  homelab:
+    name: homelab

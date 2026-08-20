@@ -7,11 +7,11 @@ services:
     volumes:
       - bark-data:/data
     networks:
-      - edge
+      - homelab
 
 volumes:
   bark-data:
 
 networks:
-  edge:
-    name: homelab_edge
+  homelab:
+    name: homelab

@@ -7,12 +7,14 @@ name: homelab
 include:
   - path: nginx/compose.yml
   - path: services/uptime-kuma/compose.yml
-  - path: services/bark/compose.yml
+  - path: services/bark-server/compose.yml
   - path: services/beszel/compose.yml
+  - path: services/qinglong/compose.yml
   - path: services/termix/compose.yml
   - path: services/tailscale-derp/compose.yml
   - path: services/easytier-relay/compose.yml
+  - path: services/radicale/compose.yml
 
 networks:
-  edge:
-    name: homelab_edge
+  homelab:
+    name: homelab

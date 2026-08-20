@@ -46,16 +46,20 @@ chmod 600 .env
 
 ## Compose profiles（VPS 模块）
 
-| Profile | 说明 |
-|---------|------|
-| `nginx` | **每台必须** — 反代 / HTTPS 入口 |
-| `beszel-agent` | 启用 Beszel 时每台必须 |
-| `beszel` | Beszel hub（少数机器） |
-| `uptime-kuma` | 主监控（按需） |
-| `bark` | Bark 服务端 VPS（按需） |
-| `termix` | 可选 |
-| `tailscale-derp` | 自建 DERP，仅 VPS（按需） |
-| `easytier-relay` | EasyTier 中转 VPS（按需） |
+久未部署时，按各模块 README 查参数与核对清单（密钥仍只在服务器 `.env`）。
+
+| Profile | 说明 | 部署备忘 |
+|---------|------|----------|
+| `nginx` | **每台必须** — 反代 / HTTPS 入口 | [`nginx/README.md`](nginx/README.md) |
+| `beszel-agent` | 启用 Beszel 时每台必须 | [`services/beszel/README.md`](services/beszel/README.md) |
+| `beszel` | Beszel hub（少数机器） | 同上 |
+| `uptime-kuma` | 主监控（按需） | [`services/uptime-kuma/README.md`](services/uptime-kuma/README.md) |
+| `bark` | Bark 服务端 VPS（按需） | [`services/bark-server/README.md`](services/bark-server/README.md) |
+| `qinglong` | 青龙面板定时任务（按需） | [`services/qinglong/README.md`](services/qinglong/README.md) |
+| `termix` | 可选 | [`services/termix/README.md`](services/termix/README.md) |
+| `tailscale-derp` | 自建 DERP，仅 VPS（按需） | [`services/tailscale-derp/README.md`](services/tailscale-derp/README.md) |
+| `easytier-relay` | EasyTier 中转 VPS（按需） | [`services/easytier-relay/README.md`](services/easytier-relay/README.md) |
+| `radicale` | CalDAV / CardDAV（按需） | [`services/radicale/README.md`](services/radicale/README.md) |
 
 ```bash
 # 由 scripts/up.sh 按 PROFILES 展开，例如：
@@ -67,8 +71,14 @@ chmod 600 .env
 
 见 [`edge/README.md`](edge/README.md)。完整项目请 fork 上游，勿把边缘源码放进本库。
 
+## 子域名（Nginx）
+
+`DOMAIN` 下按服务访问（需 DNS 指向本机且对应 profile 已启用），详见 [`nginx/README.md`](nginx/README.md)：
+
+`uptime` / `bark` / `beszel` / `qinglong` / `termix` / `radicale` + `.${DOMAIN}`
+
 ## 开放项
 
 - 是否使用长期小机、如何拆分服务
-- 子域名与 Nginx ↔ 边缘域名分工
+- Nginx ↔ 边缘域名分工（TLS / Certbot）
 - 具体 fork URL（填入 `edge/*.md`）

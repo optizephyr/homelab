@@ -7,7 +7,7 @@ services:
     volumes:
       - uptime-kuma-data:/app/data
     networks:
-      - edge
+      - homelab
     # Expose only via Nginx on the edge network.
     # ports:
     #   - "3001:3001"
@@ -16,5 +16,5 @@ volumes:
   uptime-kuma-data:
 
 networks:
-  edge:
-    name: homelab_edge
+  homelab:
+    name: homelab

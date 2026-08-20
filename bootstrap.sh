@@ -53,6 +53,16 @@ if [[ "${ENABLE_BESZEL:-false}" == "true" ]] && ! profile_has beszel-agent; then
   exit 1
 fi
 
+if profile_has radicale; then
+  users_file="${ROOT}/services/radicale/config/users"
+  if [[ ! -f "$users_file" ]]; then
+    touch "$users_file"
+    chmod 600 "$users_file"
+    echo "Created empty $users_file — add htpasswd hashes before clients can log in."
+    echo "  See services/radicale/README.md"
+  fi
+fi
+
 echo "Host baseline reminder: SSH, Docker, firewall (22; +80/443 if public HTTP)."
 "${ROOT}/scripts/up.sh"
-echo "Done. Adjust Nginx / Certbot as needed for DOMAIN=${DOMAIN:-unset}."
+echo "Done. Nginx subdomains use DOMAIN=${DOMAIN:-unset} (e.g. uptime.${DOMAIN:-example.com})."
