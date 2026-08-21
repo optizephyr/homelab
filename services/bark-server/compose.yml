@@ -5,12 +5,9 @@ services:
     container_name: bark-server
     restart: unless-stopped
     volumes:
-      - bark-data:/data
+      - ${DATA_ROOT:-${COMPOSE_PROJECT_DIR}/data}/bark-server:/data
     networks:
       - homelab
-
-volumes:
-  bark-data:
 
 networks:
   homelab:

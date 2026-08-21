@@ -12,9 +12,5 @@ services:
       DERP_DOMAIN: ${TAILSCALE_DERP_DOMAIN:-}
       DERP_VERIFY_CLIENTS: ${TAILSCALE_DERP_VERIFY_CLIENTS:-false}
     volumes:
-      - derper-certs:/app/certs
-      - derper-data:/var/lib/derper
-
-volumes:
-  derper-certs:
-  derper-data:
+      - ${DATA_ROOT:-${COMPOSE_PROJECT_DIR}/data}/tailscale-derp/certs:/app/certs
+      - ${DATA_ROOT:-${COMPOSE_PROJECT_DIR}/data}/tailscale-derp/data:/var/lib/derper

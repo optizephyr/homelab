@@ -10,7 +10,7 @@ services:
     container_name: qinglong
     restart: unless-stopped
     volumes:
-      - qinglong-data:/ql/data
+      - ${DATA_ROOT:-${COMPOSE_PROJECT_DIR}/data}/qinglong:/ql/data
     environment:
       # Deploy path; must start and end with /. Use '/' behind a dedicated subdomain.
       QlBaseUrl: ${QINGLONG_BASE_URL:-/}
@@ -19,9 +19,6 @@ services:
     # Expose only via Caddy on the homelab network (default panel port 5700).
     # ports:
     #   - "5700:5700"
-
-volumes:
-  qinglong-data:
 
 networks:
   homelab:

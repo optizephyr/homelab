@@ -1,6 +1,9 @@
 # Top-level compose: shared network + optional service includes.
 # Enable modules via: docker compose --profile <name> up -d
 # Or set PROFILES in .env and use ./scripts/up.sh
+#
+# Persistent data lives under DATA_ROOT (default: <repo>/data/<service>/).
+# Caddyfile / radicale config / mailhub config.yaml stay in git; only runtime data is under data/.
 
 name: homelab
 

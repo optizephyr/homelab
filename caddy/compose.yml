@@ -12,14 +12,10 @@ services:
       CADDY_DOMAIN: ${CADDY_DOMAIN:?Set CADDY_DOMAIN in .env}
     volumes:
       - ./Caddyfile:/etc/caddy/Caddyfile:ro
-      - caddy-data:/data
-      - caddy-config:/config
+      - ${DATA_ROOT:-${COMPOSE_PROJECT_DIR}/data}/caddy/data:/data
+      - ${DATA_ROOT:-${COMPOSE_PROJECT_DIR}/data}/caddy/config:/config
     networks:
       - homelab
-
-volumes:
-  caddy-data:
-  caddy-config:
 
 networks:
   homelab:

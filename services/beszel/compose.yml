@@ -6,7 +6,7 @@ services:
     container_name: beszel
     restart: unless-stopped
     volumes:
-      - beszel-data:/beszel_data
+      - ${DATA_ROOT:-${COMPOSE_PROJECT_DIR}/data}/beszel:/beszel_data
     networks:
       - homelab
 
@@ -22,9 +22,6 @@ services:
       # Set in .env when enabling this profile
       HUB_URL: ${BESZEL_HUB_URL:-}
       TOKEN: ${BESZEL_TOKEN:-}
-
-volumes:
-  beszel-data:
 
 networks:
   homelab:

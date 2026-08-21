@@ -23,16 +23,13 @@ services:
       BARK_KEY: ${MAILHUB_BARK_KEY:-}
     volumes:
       - ./config.yaml:/app/config.yaml:ro
-      - mailhub-data:/app/data
+      - ${DATA_ROOT:-${COMPOSE_PROJECT_DIR}/data}/mailhub:/app/data
     networks:
       - homelab
     command:
       - sh
       - -c
       - while true; do mailhub sync; sleep "$${MAILHUB_INTERVAL_SECONDS:-900}"; done
-
-volumes:
-  mailhub-data:
 
 networks:
   homelab:

@@ -1,17 +1,18 @@
 # Optional — not required if SSH is enough.
-# Set TERMIX_IMAGE in .env after confirming the upstream image.
+# Official image: https://docs.termix.site/install/server/docker
 services:
   termix:
     profiles: ["termix"]
-    image: ${TERMIX_IMAGE:-public.ecr.aws/termix/termix:placeholder}
+    image: ghcr.io/lukegus/termix:latest
     container_name: termix
     restart: unless-stopped
     environment:
       # Align with Caddy reverse_proxy termix:8080
       PORT: "8080"
+    volumes:
+      - ${DATA_ROOT:-${COMPOSE_PROJECT_DIR}/data}/termix:/app/data
     networks:
       - homelab
-
 
 networks:
   homelab:

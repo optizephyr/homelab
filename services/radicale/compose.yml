@@ -10,15 +10,12 @@ services:
     volumes:
       - ./config/config:/etc/radicale/config:ro
       - ./config/users:/etc/radicale/users:ro
-      - radicale-data:/var/lib/radicale
+      - ${DATA_ROOT:-${COMPOSE_PROJECT_DIR}/data}/radicale:/var/lib/radicale
     networks:
       - homelab
     # Expose only via Caddy on the homelab network (container port 5232).
     # ports:
     #   - "5232:5232"
-
-volumes:
-  radicale-data:
 
 networks:
   homelab:

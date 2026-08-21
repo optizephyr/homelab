@@ -8,12 +8,9 @@ services:
     restart: unless-stopped
     network_mode: host
     volumes:
-      - easytier-data:/var/lib/easytier
+      - ${DATA_ROOT:-${COMPOSE_PROJECT_DIR}/data}/easytier-relay:/var/lib/easytier
     # Example override — adjust in .env / command as needed:
     # command: ["-d", "--network-name", "${EASYTIER_NETWORK_NAME}", "--network-secret", "${EASYTIER_NETWORK_SECRET}"]
     environment:
       EASYTIER_NETWORK_NAME: ${EASYTIER_NETWORK_NAME:-}
       EASYTIER_NETWORK_SECRET: ${EASYTIER_NETWORK_SECRET:-}
-
-volumes:
-  easytier-data:
