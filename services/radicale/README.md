@@ -76,3 +76,26 @@ macOS 日历在明文 HTTP 上可能不带账号；对外应走 HTTPS。
 3. DNS / Caddy：`caldav.${CADDY_DOMAIN}` → `radicale:5232`
 4. 卷 `radicale-data` 是否在本机（换机需迁卷）  
 5. 客户端用 HTTPS 与正确用户名（路径 `/USERNAME/`）  
+
+## 故障排查
+
+### htpasswd 文件权限导致容器重启
+**现象：** 容器持续重启，日志报 `Permission denied: '/etc/radicale/users'`。
+**根因：** 宿主机 `config/users` 文件所有者 UID 与容器内 radicale 用户 UID(1000) 不一致，或文件权限过严。
+**修复：**
+```bash
+# 确保文件所有者为 UID 1000（admin 用户）
+chown 1000:1000 services/radicale/config/users
+chmod 600 services/radicale/config/users
+```
+**注意：** 容器以 `radicale(1000)` 运行，宿主机文件必须对 UID 1000 可读。即使权限为 600，只要所有者匹配即可。若通过 `touch` 或其他方式创建文件后所有者为 root 或其他 UID，需手动修正。
+
+### 数据目录权限问题
+**现象：** 容器启动报 `/var/lib/radicale/collections` Permission denied。
+**根因：** 数据卷实际挂载路径（如 `/data/radicale`）所有者非 UID 1000。
+**修复：**
+```bash
+# 确认 compose.yml 中 DATA_ROOT 变量对应的实际路径
+chown -R 1000:1000 /data/radicale
+```
+**提示：** 检查 `compose.yml` 中 `${DATA_ROOT:-${COMPOSE_PROJECT_DIR}/data}` 解析后的实际路径，避免修改错误目录。
