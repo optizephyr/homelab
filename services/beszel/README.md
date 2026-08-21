@@ -15,6 +15,12 @@ BESZEL_HUB_URL=https://monitor.example.com
 BESZEL_TOKEN=<在 hub UI 创建 agent 后得到>
 ```
 
+首次部署时先只启用 `caddy,beszel`。Hub 可访问后在 UI 创建本机 agent，
+期间保持 `BESZEL_ENABLE=false`；拿到 token 后再补
+`BESZEL_HUB_URL` / `BESZEL_TOKEN`、`BESZEL_ENABLE=true` 和
+`beszel-agent` profile。
+`scripts/up.sh` 会先部署 Hub；缺少 token 时在 agent 阶段暂停。
+
 ### 仅 agent 的机
 
 ```bash

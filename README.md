@@ -63,10 +63,36 @@ chmod 600 .env
 | `mailhub` | 定时处理邮件并分发日历 / 待办 / Bark（按需） | [`services/mailhub/README.md`](services/mailhub/README.md) |
 
 ```bash
-# 由 scripts/up.sh 按 PROFILES 展开，例如：
-# PROFILES=caddy,beszel-agent,uptime-kuma
+# scripts/up.sh 按依赖阶段展开 PROFILES：
+# foundation (caddy) -> core -> integrations
+# 例如：
+# PROFILES=caddy,beszel,beszel-agent,uptime-kuma
 ./bootstrap.sh
 ```
+
+## 部署顺序与人工门
+
+`compose.yml` 不用 `depends_on` 表达这些依赖，因为 Beszel token、Radicale
+collection、Bark device key 等资源只能在服务启动后由人工产生。
+`scripts/up.sh` 会按以下阶段执行，同一阶段内的服务并行：
+
+1. `foundation`：先启动 `caddy`
+2. `core`：启动除 `beszel-agent`、`easytier-relay`、`mailhub` 外的所选 profile
+3. `integrations`：检查人工产物后，再启动上述三个集成服务
+
+缺少人工产物时脚本以退出码 `2` 暂停；已经启动的基础和核心服务保持运行。
+补齐 `.env` 后重跑即可，Compose 操作是幂等的。
+
+主要人工门：
+
+- `radicale`：`services/radicale/config/users` 必须是非空 htpasswd 文件
+- `beszel-agent`：Hub 已可达并已签发 `BESZEL_TOKEN`
+- `easytier-relay`：网络名、密钥、命令参数和防火墙已核对，并设置
+  `EASYTIER_SETUP_CONFIRMED=true`
+- `mailhub`：镜像仓库已登录，QQ 授权码已配置；使用 CalDAV 时已创建
+  `config.yaml` 指定的 collection 并设置
+  `MAILHUB_CALDAV_SETUP_CONFIRMED=true`；完成列表检查和 dry-run 后设置
+  `MAILHUB_DRY_RUN_CONFIRMED=true`
 
 ## 边缘备用
 

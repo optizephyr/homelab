@@ -18,6 +18,8 @@ MAILHUB_QQ_AUTH_CODE=QQ邮箱授权码
 MAILHUB_CALDAV_URL=http://radicale:5232
 MAILHUB_CALDAV_USERNAME=mailhub
 MAILHUB_CALDAV_PASSWORD=change-me
+# 创建 config.yaml 指定的日历和任务列表后再设为 true
+MAILHUB_CALDAV_SETUP_CONFIRMED=true
 
 # 可选：两项都填才启用
 # MAILHUB_BARK_SERVER_URL=http://bark-server:8080
@@ -55,7 +57,10 @@ docker compose --profile mailhub run --rm mailhub mailhub list-reminders
 docker compose --profile mailhub run --rm mailhub mailhub sync --dry-run
 ```
 
-确认输出后再由常驻容器每 15 分钟同步。不要让另一台机器使用相同 `source_id` 和邮箱同时写入。
+确认输出后在 `.env` 设置 `MAILHUB_DRY_RUN_CONFIRMED=true`，再执行
+`./scripts/up.sh` 启动常驻容器。脚本会先启动 Radicale / Bark 等核心服务，
+缺少上述人工确认时暂停，不会提前启动 Mailhub。不要让另一台机器使用相同
+`source_id` 和邮箱同时写入。
 
 查看运行状态与日志：
 
@@ -78,3 +83,5 @@ docker compose --profile mailhub exec mailhub \
 3. CalDAV 日历 / 任务列表显示名称与 `config.yaml` 完全一致
 4. `mailhub-data` 卷只由一个 Mailhub 实例使用
 5. 首次正式同步前已执行 `sync --dry-run`
+6. `.env` 中相应的 `MAILHUB_CALDAV_SETUP_CONFIRMED` /
+   `MAILHUB_DRY_RUN_CONFIRMED` 已设为 `true`

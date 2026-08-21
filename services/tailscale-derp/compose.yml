@@ -4,7 +4,7 @@
 services:
   tailscale-derp:
     profiles: ["tailscale-derp"]
-    image: ${TAILSCALE_DERP_IMAGE:-ghcr.io/fredliang44/derper:latest}
+    image: ghcr.io/fredliang44/derper:latest
     container_name: tailscale-derp
     restart: unless-stopped
     network_mode: host

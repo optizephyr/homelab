@@ -11,6 +11,8 @@ EasyTier 中转 / 公网节点（VPS）。边缘 WSS 备用见 [`edge/easytier-w
 PROFILES=caddy,easytier-relay,...
 EASYTIER_NETWORK_NAME=<网络名>
 EASYTIER_NETWORK_SECRET=<密钥>
+# 核对下面的 command 参数与防火墙后设置
+EASYTIER_SETUP_CONFIRMED=true
 ```
 
 如需显式传参，在 `compose.yml` 取消注释并改成实际 flags，例如：
@@ -49,3 +51,4 @@ command:
 2. `command` 是否已按当时文档启用（仅环境变量可能不够）  
 3. 防火墙放行的中转端口是否与 EasyTier 配置一致  
 4. 客户端 / 边缘 WSS 备用是否仍指向本节点  
+5. 完成上述核对后 `.env` 中 `EASYTIER_SETUP_CONFIRMED=true`

@@ -69,41 +69,7 @@ if profile_has radicale; then
 fi
 
 if profile_has mailhub; then
-  if [[ -z "${MAILHUB_IMAGE:-}" ]]; then
-    echo "mailhub requires MAILHUB_IMAGE in .env (Aliyun ACR or other prebuilt image)." >&2
-    exit 1
-  fi
-  if [[ -z "${MAILHUB_QQ_EMAIL:-}" || -z "${MAILHUB_QQ_AUTH_CODE:-}" ]]; then
-    echo "mailhub requires MAILHUB_QQ_EMAIL and MAILHUB_QQ_AUTH_CODE in .env." >&2
-    exit 1
-  fi
-
-  mailhub_interval="${MAILHUB_INTERVAL_SECONDS:-900}"
-  if [[ ! "$mailhub_interval" =~ ^[1-9][0-9]*$ ]]; then
-    echo "MAILHUB_INTERVAL_SECONDS must be a positive integer." >&2
-    exit 1
-  fi
-
-  caldav_count=0
-  [[ -n "${MAILHUB_CALDAV_URL:-}" ]] && ((caldav_count += 1))
-  [[ -n "${MAILHUB_CALDAV_USERNAME:-}" ]] && ((caldav_count += 1))
-  [[ -n "${MAILHUB_CALDAV_PASSWORD:-}" ]] && ((caldav_count += 1))
-  if ((caldav_count > 0 && caldav_count < 3)); then
-    echo "mailhub CalDAV requires URL, username, and password together." >&2
-    exit 1
-  fi
-
-  if { [[ -n "${MAILHUB_LLM_API_BASE:-}" ]] && [[ -z "${MAILHUB_LLM_API_KEY:-}" ]]; } ||
-    { [[ -z "${MAILHUB_LLM_API_BASE:-}" ]] && [[ -n "${MAILHUB_LLM_API_KEY:-}" ]]; }; then
-    echo "mailhub LLM requires MAILHUB_LLM_API_BASE and MAILHUB_LLM_API_KEY together." >&2
-    exit 1
-  fi
-
-  if { [[ -n "${MAILHUB_BARK_SERVER_URL:-}" ]] && [[ -z "${MAILHUB_BARK_KEY:-}" ]]; } ||
-    { [[ -z "${MAILHUB_BARK_SERVER_URL:-}" ]] && [[ -n "${MAILHUB_BARK_KEY:-}" ]]; }; then
-    echo "mailhub Bark requires MAILHUB_BARK_SERVER_URL and MAILHUB_BARK_KEY together." >&2
-    exit 1
-  fi
+  echo "Mailhub is enabled; scripts/up.sh will pause after core services until its manual setup is confirmed."
 fi
 
 echo "Host baseline reminder: SSH, Docker, firewall (22; +80/443 for Caddy HTTPS)."

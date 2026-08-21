@@ -12,8 +12,6 @@
 PROFILES=caddy,tailscale-derp,...   # caddy 仍是基线；DERP 本身用 host 网络
 TAILSCALE_DERP_DOMAIN=derp.example.com
 TAILSCALE_DERP_VERIFY_CLIENTS=false
-# 可选换镜像
-# TAILSCALE_DERP_IMAGE=ghcr.io/fredliang44/derper:latest
 ```
 
 ```bash
@@ -26,7 +24,8 @@ TAILSCALE_DERP_VERIFY_CLIENTS=false
 |------|------|------|
 | `TAILSCALE_DERP_DOMAIN` | 空 | DERP 对外域名（证书 / 客户端配置）；写入容器 `DERP_DOMAIN` |
 | `TAILSCALE_DERP_VERIFY_CLIENTS` | `false` | 是否校验 Tailscale 客户端；写入容器 `DERP_VERIFY_CLIENTS` |
-| `TAILSCALE_DERP_IMAGE` | `ghcr.io/fredliang44/derper:latest` | derper 镜像 |
+
+镜像写在 `compose.yml`（`ghcr.io/fredliang44/derper:latest`），不走 `.env`。需要换源时改 compose，不要为公开镜像再加一层环境变量。
 
 | 资源 | 说明 |
 |------|------|
